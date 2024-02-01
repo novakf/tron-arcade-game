@@ -2,7 +2,7 @@ module.exports = {
   bracketSameLine: false,
   bracketSpacing: true,
   endOfLine: 'auto',
-  printWidth: 80,
+  printWidth: 100,
   singleQuote: true,
   semi: false,
   overrides: [
