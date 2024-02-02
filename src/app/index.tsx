@@ -4,6 +4,7 @@ import { styled } from 'styled-components'
 import logo from './assets/tron-logo.jpg'
 import Game from './components/Game'
 import Controls from './components/Controls'
+import Stats from './components/Stats'
 
 const App: React.FC = () => {
   return (
@@ -14,8 +15,9 @@ const App: React.FC = () => {
       <GameBlock>
         <Controls />
         <Game />
+        <Stats />
       </GameBlock>
-      <Hint>AVOID HITTING LIGHT TRACES AND WALLS</Hint>
+      <Hint>HINT: AVOID HITTING LIGHT TRACES AND WALLS</Hint>
     </Container>
   )
 }

@@ -9,7 +9,7 @@ const Controls: React.FC = () => {
   return (
     <Container>
       <Block>
-        <Title>Player 1</Title>
+        <Title style={{color: '#edaf1d'}}>Player 1</Title>
         <Button>W</Button>
         <Row>
           <Button>A</Button>
@@ -18,7 +18,7 @@ const Controls: React.FC = () => {
         </Row>
       </Block>
       <Block>
-        <Title>Player 2</Title>
+        <Title  style={{color: '#00ddff'}}>Player 2</Title>
         <Button>
           <ArrowUp />
         </Button>
@@ -46,6 +46,15 @@ const Button = styled.div`
   height: 40px;
   border: 1px solid;
   border-radius: 10px;
+
+  &:hover {
+    color: #000;
+    background: #ddd;
+
+    svg {
+      fill: #000;
+    }
+  }
 `
 
 const Row = styled.div`
@@ -53,7 +62,9 @@ const Row = styled.div`
   gap: 10px;
 `
 
-const Title = styled.div``
+const Title = styled.div`
+  font-size: 24px;
+`
 
 const Block = styled.div`
   display: flex;
@@ -67,7 +78,7 @@ const Container = styled.div`
   width: calc((100vw - 600px) / 2);
   flex-direction: column;
   color: #fff;
-  gap: 40px;
+  gap: 60px;
 `
 
 export default Controls
