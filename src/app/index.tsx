@@ -3,6 +3,7 @@ import './styles.scss'
 import { styled } from 'styled-components'
 import logo from './assets/tron-logo.jpg'
 import Game from './components/Game'
+import Controls from './components/Controls'
 
 const App: React.FC = () => {
   return (
@@ -11,9 +12,10 @@ const App: React.FC = () => {
         <img src={logo} />
       </Logo>
       <GameBlock>
+        <Controls />
         <Game />
-        <Hint>AVOID HITTING LIGHT TRACES AND WALLS</Hint>
       </GameBlock>
+      <Hint>AVOID HITTING LIGHT TRACES AND WALLS</Hint>
     </Container>
   )
 }
@@ -23,6 +25,7 @@ const Hint = styled.div`
   justify-content: center;
   color: #694500;
   font-size: 20px;
+  margin-bottom: 20px;
 `
 
 const Container = styled.div`
@@ -33,9 +36,7 @@ const Container = styled.div`
 
 const GameBlock = styled.div`
   display: flex;
-  flex-direction: column;
   gap: 10px;
-  justify-content: center;
   align-items: center;
   height: 100%;
 `

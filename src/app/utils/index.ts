@@ -16,7 +16,7 @@ export const clearBoard = (context: CanvasRenderingContext2D | null) => {
   }
 }
 
-export const drawObject = (
+export const drawPoint = (
   context: CanvasRenderingContext2D | null,
   objectBody: PointType[],
   fillColor: string

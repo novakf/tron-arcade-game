@@ -1,70 +1,113 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 import { DirectionType, PointType } from '../../types'
-import { clearBoard, drawObject, useInterval } from '../../utils'
+import { clearBoard, drawPoint, useInterval } from '../../utils'
 
 const Game: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
 
   const [context, setContext] = useState<CanvasRenderingContext2D | null>(null)
 
-  const [positionX, setPositionX] = useState(300)
-  const [positionY, setPositionY] = useState(550)
-  const [points, setPoints] = useState<PointType[]>([{ x: 300, y: 550 }])
-  const [direction, setDirection] = useState<DirectionType>('ArrowUp')
+  const [firstPositionX, setFirstPositionX] = useState(300)
+  const [firstPositionY, setFirstPositionY] = useState(550)
+  const [firstPoints, setFirstPoints] = useState<PointType[]>([{ x: 300, y: 550 }])
+  const [firstDirection, setFirstDirection] = useState<DirectionType>('ArrowUp')
 
-  const [interval, setInterval] = useState<number | null>(15)
+  const [secondPositionX, setSecondPositionX] = useState(300)
+  const [secondPositionY, setSecondPositionY] = useState(50)
+  const [secondPoints, setSecondPoints] = useState<PointType[]>([{ x: 300, y: 50 }])
+  const [secondDirection, setSecondDirection] = useState<DirectionType>('ArrowDown')
+
+  const [interval, setInterval] = useState<number | null>(5)
 
   const restart = () => {
-    setPoints([{ x: 300, y: 550 }])
-    setPositionX(300)
-    setPositionY(550)
-    setDirection('ArrowUp')
-    setInterval(15)
+    setFirstPoints([{ x: 300, y: 550 }])
+    setFirstPositionX(300)
+    setFirstPositionY(550)
+    setFirstDirection('ArrowUp')
+    setSecondPoints([{ x: 300, y: 50 }])
+    setSecondPositionX(300)
+    setSecondPositionY(50)
+    setSecondDirection('ArrowDown')
+    setInterval(5)
     clearBoard(context)
   }
 
   useEffect(() => {
     setContext(canvasRef.current && canvasRef.current.getContext('2d'))
-    drawObject(context, points, '#00ddff')
-  }, [context, positionX, positionY])
+    drawPoint(context, firstPoints, '#00ddff')
+    drawPoint(context, secondPoints, '#edaf1d')
+  }, [context, firstPositionX, firstPositionY, secondPositionX, secondPositionY])
 
   useInterval(() => {
-    if (direction === 'ArrowUp') setPositionY(positionY - 3)
-    if (direction === 'ArrowDown') setPositionY(positionY + 3)
-    if (direction === 'ArrowLeft') setPositionX(positionX - 3)
-    if (direction === 'ArrowRight') setPositionX(positionX + 3)
+    if (firstDirection === 'ArrowUp') setFirstPositionY(firstPositionY - 1)
+    if (firstDirection === 'ArrowDown') setFirstPositionY(firstPositionY + 1)
+    if (firstDirection === 'ArrowLeft') setFirstPositionX(firstPositionX - 1)
+    if (firstDirection === 'ArrowRight') setFirstPositionX(firstPositionX + 1)
+    if (secondDirection === 'ArrowUp') setSecondPositionY(secondPositionY - 1)
+    if (secondDirection === 'ArrowDown') setSecondPositionY(secondPositionY + 1)
+    if (secondDirection === 'ArrowLeft') setSecondPositionX(secondPositionX - 1)
+    if (secondDirection === 'ArrowRight') setSecondPositionX(secondPositionX + 1)
   }, interval)
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       console.log(e.key)
-      if (e.key === 'ArrowUp' && direction !== 'ArrowDown') setDirection(e.key)
-      if (e.key === 'ArrowDown' && direction !== 'ArrowUp') setDirection(e.key)
-      if (e.key === 'ArrowLeft' && direction !== 'ArrowRight') setDirection(e.key)
-      if (e.key === 'ArrowRight' && direction !== 'ArrowLeft') setDirection(e.key)
+      if (e.key === 'ArrowUp' && firstDirection !== 'ArrowDown') setFirstDirection(e.key)
+      if (e.key === 'ArrowDown' && firstDirection !== 'ArrowUp') setFirstDirection(e.key)
+      if (e.key === 'ArrowLeft' && firstDirection !== 'ArrowRight') setFirstDirection(e.key)
+      if (e.key === 'ArrowRight' && firstDirection !== 'ArrowLeft') setFirstDirection(e.key)
+
+      if (e.key === 'w' && secondDirection !== 'ArrowDown') setSecondDirection('ArrowUp')
+      if (e.key === 's' && secondDirection !== 'ArrowUp') setSecondDirection('ArrowDown')
+      if (e.key === 'a' && secondDirection !== 'ArrowRight') setSecondDirection('ArrowLeft')
+      if (e.key === 'd' && secondDirection !== 'ArrowLeft') setSecondDirection('ArrowRight')
 
       if (e.key === 'Enter') restart()
     }
     window.addEventListener('keydown', handleKey)
     return () => window.removeEventListener('keydown', handleKey)
-  }, [direction])
+  }, [firstDirection, secondDirection])
 
   useEffect(() => {
-    const i = points.findIndex((point) => point.x === positionX && point.y === positionY)
+    const i = firstPoints.findIndex(
+      (point) => point.x === firstPositionX && point.y === firstPositionY
+    )
 
-    console.log(positionY)
+    const n = secondPoints.findIndex(
+      (point) => point.x === firstPositionX && point.y === firstPositionY
+    )
+
+    const j = secondPoints.findIndex(
+      (point) => point.x === secondPositionX && point.y === secondPositionY
+    )
+
+    const m = firstPoints.findIndex(
+      (point) => point.x === secondPositionX && point.y === secondPositionY
+    )
+
+    console.log(firstPositionY, secondPositionY)
 
     if (
-      (direction === 'ArrowRight' && positionX >= 600) ||
-      (direction === 'ArrowDown' && positionY >= 600) ||
-      (direction === 'ArrowLeft' && positionX <= 0) ||
-      (direction === 'ArrowUp' && positionY <= 0) ||
-      (i > -1 && i < points.length - 1)
+      (firstDirection === 'ArrowRight' && firstPositionX >= 600) ||
+      (firstDirection === 'ArrowDown' && firstPositionY >= 600) ||
+      (firstDirection === 'ArrowLeft' && firstPositionX <= 0) ||
+      (firstDirection === 'ArrowUp' && firstPositionY <= 0) ||
+      (secondDirection === 'ArrowRight' && secondPositionX >= 600) ||
+      (secondDirection === 'ArrowDown' && secondPositionY >= 600) ||
+      (secondDirection === 'ArrowLeft' && secondPositionX <= 0) ||
+      (secondDirection === 'ArrowUp' && secondPositionY <= 0) ||
+      (i > -1 && i < firstPoints.length - 1) ||
+      (j > -1 && j < secondPoints.length - 1) ||
+      n > -1 ||
+      m > -1
     ) {
       setInterval(null)
-    } else setPoints((prev) => [...prev, { x: positionX, y: positionY }])
-  }, [positionX, positionY])
+    } else {
+      setFirstPoints((prev) => [...prev, { x: firstPositionX, y: firstPositionY }])
+      setSecondPoints((prev) => [...prev, { x: secondPositionX, y: secondPositionY }])
+    }
+  }, [firstPositionX, firstPositionY, secondPositionX, secondPositionY])
 
   return interval ? (
     <Canvas ref={canvasRef} width={600} height={600} />
@@ -82,14 +125,12 @@ const Container = styled.div`
   width: 600px;
   height: 600px;
   border: 3px solid #006595;
-  margin: 0 auto;
   background: #000216;
 `
 
 const Canvas = styled.canvas`
   position: relative;
   border: 3px solid #006595;
-  margin: 0 auto;
   background: #000216;
 `
 
