@@ -12,10 +12,18 @@ const App: React.FC = () => {
       </Logo>
       <GameBlock>
         <Game />
+        <Hint>AVOID HITTING LIGHT TRACES AND WALLS</Hint>
       </GameBlock>
     </Container>
   )
 }
+
+const Hint = styled.div`
+  display: flex;
+  justify-content: center;
+  color: #694500;
+  font-size: 20px;
+`
 
 const Container = styled.div`
   display: flex;
@@ -25,6 +33,9 @@ const Container = styled.div`
 
 const GameBlock = styled.div`
   display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
   align-items: center;
   height: 100%;
 `
