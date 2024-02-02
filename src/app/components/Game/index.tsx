@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
-import { PointType } from '../../types'
+import { DirectionType, PointType, RotateDegrees } from '../../types'
 import { useInterval } from '../../utils'
+import Cycle from '../../icons/cycle'
 
 const Game: React.FC = () => {
   const [positionX, setPositionX] = useState(300)
   const [positionY, setPositionY] = useState(0)
   const [points, setPoints] = useState<PointType[]>([{ x: 300, y: 0 }])
-  const [direction, setDirection] = useState('ArrowUp')
+  const [direction, setDirection] = useState<DirectionType>('ArrowUp')
 
-  const [interval, setInterval] = useState<number | null>(15)
+  const [interval, setInterval] = useState<number | null>(10)
 
   const restart = () => {
     setPoints([{ x: 300, y: 0 }])
     setPositionX(300)
     setPositionY(0)
     setDirection('ArrowUp')
-    setInterval(15)
+    setInterval(10)
   }
 
   useInterval(() => {
@@ -58,7 +59,11 @@ const Game: React.FC = () => {
     <Container>
       {interval ? (
         points.map((point, i) => {
-          return <Point key={i} x={point.x} y={point.y} />
+          return (
+            <Point key={i} x={point.x} y={point.y}>
+              {i === points.length - 1 && <StyledCycle rotatedeg={RotateDegrees[direction]} />}
+            </Point>
+          )
         })
       ) : (
         <Restart>
@@ -69,13 +74,45 @@ const Game: React.FC = () => {
   )
 }
 
+const StyledCycle = styled(Cycle)<{ rotatedeg: number }>`
+  position: absolute;
+  width: 40px;
+  height: fit-content;
+  transform: rotate(${(p) => p.rotatedeg}deg);
+  transition: all 0.3s;
+
+  ${(props) =>
+    props.rotatedeg === 90 &&
+    `
+    left: -18px;
+    top: -28px;
+  `}
+  ${(props) =>
+    props.rotatedeg === 0 &&
+    `
+    left: -38px;
+    top: -8px;
+  `}
+  ${(props) =>
+    props.rotatedeg === -90 &&
+    `
+    left: -19px;
+    top: 8px;
+  `}
+  ${(props) =>
+    props.rotatedeg === 180 &&
+    `
+    top: -8px;
+  `}
+`
+
 const Point = styled.div<{ x: number; y: number }>`
   width: 3px;
   height: 3px;
   position: absolute;
   top: calc(600px - ${(props) => props.y}px);
   left: ${(props) => props.x}px;
-  background: #fff;
+  background: #00ddff;
 `
 
 const Container = styled.div`
